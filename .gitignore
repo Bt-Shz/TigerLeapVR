@@ -75,6 +75,10 @@ docs/
 ^*.private.[0-9]+$
 ^*.private.[0-9]+.meta$
 
+# Local WatchSdk API override (copy from Resources/WatchSdkConfig.example.json)
+Assets/Resources/WatchSdkConfig.local.json
+Assets/Resources/WatchSdkConfig.local.json.meta
+
 # ===== Third-party / reinstallable (restore from Asset Store, Firebase SDK, or Drive) =====
 Assets/Firebase/
 Assets/ExternalDependencyManager/
