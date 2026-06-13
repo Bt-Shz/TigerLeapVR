@@ -43,6 +43,7 @@ public sealed class PerformanceService : IDisposable
             : 0d;
 
         var averageTimeSeconds = Math.Max(0, (int)Math.Round(sessionSeconds));
+        // averageTimeSeconds: Phase 2/3 stand-in = session duration; see docs/api-migration-phase3-easyhand-metrics.md
         return UploadGamePerformanceAsync(EasyHandGameName, accuracy, averageTimeSeconds);
     }
 
