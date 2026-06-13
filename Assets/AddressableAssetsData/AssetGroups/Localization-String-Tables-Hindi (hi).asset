@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Hindi (hi)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-String-Tables-Hindi (hi)
+  m_GUID: f81d1d11dabb0c44697d0f54bb98709d
+  m_SerializeEntries:
+  - m_GUID: 5165bd3fd694d1e4c80503b18867225d
+    m_Address: GameSceneKeywords_hi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-hi
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 527b48980a46aa2488991e497beb7efa
+    m_Address: MainMenuKeywords_hi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-hi
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 915062b952ed5ac4280d95846f2242c4
+    m_Address: HealthyPlate_hi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-hi
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0dcde39e79520d4aad42547377509ff
+    m_Address: TaichiSceneKeywords_hi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-hi
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 647bf7cb054479946bca54ed5ea0967a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e6ddea096b175c146baa060256daa685, type: 2}
+    - {fileID: 11400000, guid: 7b96c4b453f918d4faee43f818d95092, type: 2}

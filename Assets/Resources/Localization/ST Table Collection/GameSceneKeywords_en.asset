@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameSceneKeywords_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 5e54da9e1a2256a42b3f359c317b21e4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 89385951232
+    m_Localized: Choose Difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 214472679424
+    m_Localized: Easy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328729714688
+    m_Localized: Intermediate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 432920420352
+    m_Localized: Hard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7989307203584
+    m_Localized: You Win
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8078083842048
+    m_Localized: 'Attempts :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8196669399040
+    m_Localized: 'Time :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8300390342656
+    m_Localized: Play Again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8412193710080
+    m_Localized: Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11811068928000
+    m_Localized: Game Paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11921978908672
+    m_Localized: Play Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12004153712640
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16945610055680
+    m_Localized: Game Over
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17057040130048
+    m_Localized: 'Matches :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17257603358720
+    m_Localized: Try Again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3121350836314112
+    m_Localized: 'Attempts: '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93689547952734208
+    m_Localized: Play Video
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93690323244662784
+    m_Localized: 'Timer:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93690555957231616
+    m_Localized: 'Score:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93700233613262848
+    m_Localized: Daily Limits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93701233761828864
+    m_Localized: 'SELECT INGREDIENTS '
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

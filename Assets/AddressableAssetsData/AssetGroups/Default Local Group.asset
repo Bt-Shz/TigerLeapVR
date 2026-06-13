@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 226c0aeeea98d0247b73dfef31845ad6
+  m_SerializeEntries:
+  - m_GUID: 9d1f4e1677bd40041a998e5b99a6702f
+    m_Address: Assets/Scripts/FoodChooseScripts/ScritableObject/FoodChooseModels/Prefab/Tomato.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 647bf7cb054479946bca54ed5ea0967a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 5c1ab2f40946b7b4faf65070cde3c9ad, type: 2}
+    - {fileID: 11400000, guid: de22c2ee3280fe04ca6ba206296bf3b7, type: 2}

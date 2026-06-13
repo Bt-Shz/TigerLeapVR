@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: MainMenuKeywords Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: MainMenuKeywords
+  m_TableCollectionNameGuidString: 382be7ee4f8a7f8469c7418564c1985a
+  m_Entries:
+  - m_Id: 108084158464
+    m_Key: login_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105189425152
+    m_Key: email_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2354603712512
+    m_Key: password_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2505997115392
+    m_Key: submit_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2624385540096
+    m_Key: create_account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2746813079552
+    m_Key: forgot_password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3160639889408
+    m_Key: login_status_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4753477165056
+    m_Key: signup_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104533398216704
+    m_Key: verify_email_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105299055828992
+    m_Key: verify_status_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105731106889728
+    m_Key: verify_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107914317619200
+    m_Key: reset_password_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107998606352384
+    m_Key: new_password_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108112041304064
+    m_Key: confirm_password_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108227518881792
+    m_Key: confirm_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111085328883712
+    m_Key: title_game_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111257727361024
+    m_Key: button_new_game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111329164746752
+    m_Key: button_options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111479660568576
+    m_Key: button_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113593145188352
+    m_Key: title_select_language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113786653597696
+    m_Key: button_english
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113877317672960
+    m_Key: button_chinese
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113970200535040
+    m_Key: button_hindi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115434385924096
+    m_Key: title_loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115605987483648
+    m_Key: label_loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116744623579136
+    m_Key: title_error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116832062234624
+    m_Key: button_retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118042370596864
+    m_Key: title_how_to_play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118174243708928
+    m_Key: how_to_play_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118343324491776
+    m_Key: button_got_it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128785572782080
+    m_Key: title_choose_game
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1827034632122269926
+  references:
+    version: 2
+    RefIds:
+    - rid: 1827034632122269926
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1752582348362

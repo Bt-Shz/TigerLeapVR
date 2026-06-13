@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: GameSceneKeywords Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: GameSceneKeywords
+  m_TableCollectionNameGuidString: 5e54da9e1a2256a42b3f359c317b21e4
+  m_Entries:
+  - m_Id: 89385951232
+    m_Key: title_choose_difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 214472679424
+    m_Key: button_easy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328729714688
+    m_Key: button_intermediate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 432920420352
+    m_Key: button_hard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7989307203584
+    m_Key: title_you_win
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8078083842048
+    m_Key: label_attempts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8196669399040
+    m_Key: label_time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8300390342656
+    m_Key: button_play_again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8412193710080
+    m_Key: button_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11811068928000
+    m_Key: title_game_paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11921978908672
+    m_Key: button_PlayGame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12004153712640
+    m_Key: button_quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16945610055680
+    m_Key: title_game_over
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17057040130048
+    m_Key: label_matches
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17257603358720
+    m_Key: button_try_again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3121350836314112
+    m_Key: attempts_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93689547952734208
+    m_Key: button_PlayVideo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93690323244662784
+    m_Key: Text_Timer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93690555957231616
+    m_Key: Text_Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93700233613262848
+    m_Key: Text_DaliyLimit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93701233761828864
+    m_Key: Text_SelectIngredients
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1827034639521284174
+  references:
+    version: 2
+    RefIds:
+    - rid: 1827034639521284174
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1752613725853

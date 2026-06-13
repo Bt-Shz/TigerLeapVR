@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "674597089274",
+    "firebase_url": "https://tigerleap-e950d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tigerleap-e950d",
+    "storage_bucket": "tigerleap-e950d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674597089274:android:c429d57355d81aa483fe43",
+        "android_client_info": {
+          "package_name": "com.saltocorp.tigerleap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu9BbBa1HkA4v0gDFiRff4j-W9QXbbbDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

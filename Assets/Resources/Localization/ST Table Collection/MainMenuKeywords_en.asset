@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MainMenuKeywords_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 382be7ee4f8a7f8469c7418564c1985a, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 108084158464
+    m_Localized: Login
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105189425152
+    m_Localized: Enter Email
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2354603712512
+    m_Localized: Enter Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2505997115392
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2624385540096
+    m_Localized: Create Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2746813079552
+    m_Localized: Forget Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3160639889408
+    m_Localized: Login Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4753477165056
+    m_Localized: Signup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104533398216704
+    m_Localized: Verify Email
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105299055828992
+    m_Localized: "Verify Status\t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105731106889728
+    m_Localized: Verify
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107914317619200
+    m_Localized: Reset Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107998606352384
+    m_Localized: New Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108112041304064
+    m_Localized: Confirm Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108227518881792
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111085328883712
+    m_Localized: Mahjong
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111257727361024
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111329164746752
+    m_Localized: Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111479660568576
+    m_Localized: Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113593145188352
+    m_Localized: Select Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113786653597696
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113877317672960
+    m_Localized: Chinese
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113970200535040
+    m_Localized: Hindi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115434385924096
+    m_Localized: Loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115605987483648
+    m_Localized: Loading...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116744623579136
+    m_Localized: Error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116832062234624
+    m_Localized: Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118042370596864
+    m_Localized: How To Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118174243708928
+    m_Localized: "1) You have 10 seconds to memorize card positions before they flip
+      down\n2) Click cards to find pairs matching your hand cards (bottom of screen)\n3)
+      Remember positions to reduce attempts and improve your time\n4) You have to
+      complete this before the time limit. (1 Min, 3 Min, 5 Min)\n5) Use pause button
+      anytime \u2013 your timer stops while paused"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118343324491776
+    m_Localized: Got it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128785572782080
+    m_Localized: Choose Game
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

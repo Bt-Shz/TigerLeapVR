@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: TaichiSceneKeywords
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 762f4c3ff4238954c97d6093d78af4df, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 9a6405ebef8387e4a8156125435ef522, type: 2}
+  - {fileID: 11400000, guid: cb117d7134975144e83f3bfa56cd3a2c, type: 2}
+  - {fileID: 11400000, guid: f0dcde39e79520d4aad42547377509ff, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds: []
