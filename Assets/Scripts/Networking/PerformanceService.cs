@@ -7,10 +7,20 @@ public sealed class PerformanceService : IDisposable
     private const string EasyHandGameName = "EasyHand";
 
     private readonly WatchSdkApiClient _apiClient;
+    private readonly bool _ownsClient;
 
-    public PerformanceService(WatchSdkApiClient apiClient = null)
+    public PerformanceService(WatchSdkApiClient apiClient = null, bool ownsClient = true)
     {
-        _apiClient = apiClient ?? new WatchSdkApiClient();
+        if (apiClient == null)
+        {
+            _apiClient = new WatchSdkApiClient();
+            _ownsClient = true;
+        }
+        else
+        {
+            _apiClient = apiClient;
+            _ownsClient = ownsClient;
+        }
     }
 
     public bool IsConfigured => _apiClient.IsConfigured;
@@ -61,6 +71,9 @@ public sealed class PerformanceService : IDisposable
 
     public void Dispose()
     {
-        _apiClient.Dispose();
+        if (_ownsClient)
+        {
+            _apiClient.Dispose();
+        }
     }
 }

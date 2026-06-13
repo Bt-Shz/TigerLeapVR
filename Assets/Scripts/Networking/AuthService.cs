@@ -6,10 +6,20 @@ public sealed class AuthService : IDisposable
     public event Action OnSessionExpired;
 
     private readonly WatchSdkApiClient _apiClient;
+    private readonly bool _ownsClient;
 
-    public AuthService(WatchSdkApiClient apiClient = null)
+    public AuthService(WatchSdkApiClient apiClient = null, bool ownsClient = true)
     {
-        _apiClient = apiClient ?? new WatchSdkApiClient();
+        if (apiClient == null)
+        {
+            _apiClient = new WatchSdkApiClient();
+            _ownsClient = true;
+        }
+        else
+        {
+            _apiClient = apiClient;
+            _ownsClient = ownsClient;
+        }
     }
 
     public bool IsConfigured => _apiClient.IsConfigured;
@@ -96,6 +106,9 @@ public sealed class AuthService : IDisposable
 
     public void Dispose()
     {
-        _apiClient.Dispose();
+        if (_ownsClient)
+        {
+            _apiClient.Dispose();
+        }
     }
 }
