@@ -177,10 +177,7 @@ public class PTMenuManager : MonoBehaviour
     private void StartGame()
     {
         gameStarted = true;
-    // Ensure GM2 is selected for Firebase writes
-    if (FirebaseManager.Instance != null) FirebaseManager.Instance.SelectTaichiGame();
-    // Reset game manager state
-    if (PTGameManager.Instance != null) PTGameManager.Instance.ResetRun();
+        if (PTGameManager.Instance != null) PTGameManager.Instance.ResetRun();
         
         // Reset score for new game
         if (scoreManager != null)

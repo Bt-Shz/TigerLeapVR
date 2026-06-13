@@ -429,13 +429,6 @@ public class GameManager : MonoBehaviour
         if (!cardTypeGroups.ContainsKey(cardTypeId))
         {
             cardTypeGroups[cardTypeId] = new List<CardController>();
-            
-            // NEW: Track set started when first card of this type is matched
-            GameObject analyticsObj = GameObject.Find("MahjongAnalyticsManager");
-            if (analyticsObj != null)
-            {
-                analyticsObj.SendMessage("TrackSetStarted", cardTypeId, SendMessageOptions.DontRequireReceiver);
-            }
         }
         cardTypeGroups[cardTypeId].Add(matchedCard);
 
@@ -443,13 +436,6 @@ public class GameManager : MonoBehaviour
         if (cardTypeGroups[cardTypeId].Count >= 4 && !completedCardTypes.Contains(cardTypeId))
         {
             completedCardTypes.Add(cardTypeId);
-            
-            // NEW: Track set completed when all 4 cards of this type are found
-            GameObject analyticsObj = GameObject.Find("MahjongAnalyticsManager");
-            if (analyticsObj != null)
-            {
-                analyticsObj.SendMessage("TrackSetCompleted", cardTypeId, SendMessageOptions.DontRequireReceiver);
-            }
             
             StartCoroutine(ApplyCompletionEffectToSet(cardTypeId));
         }
@@ -538,43 +524,7 @@ public class GameManager : MonoBehaviour
         // Calculate time taken (total time - remaining time)
         float timeTaken = totalGameTime - gameTimer;
         
-        // NEW: End analytics tracking for WIN
-        GameObject analyticsObj = GameObject.Find("MahjongAnalyticsManager");
-        if (analyticsObj != null)
-        {
-            analyticsObj.SendMessage("EndGameTracking", true, SendMessageOptions.DontRequireReceiver);
-        }
-        
-        // NEW: Stop hand data recording and send to Firebase (WIN)
-        if (HandDataRecorder.Instance != null && HandDataRecorder.Instance.IsRecording())
-        {
-            var session = HandDataRecorder.Instance.GetCurrentSession();
-            if (session != null)
-            {
-                // Basic game info
-                session.GameDifficulty = selectedDifficulty;
-                session.GameCompleted = true;
-                session.FinalScore = currentMatches; // Total matches found
-                
-                // Additional game statistics
-                session.TotalAttempts = attempts;
-                session.FailedAttempts = failedAttempts;
-                session.TimeTaken = totalGameTime - gameTimer;
-                session.TimeLimit = totalGameTime;
-                session.MatchesCompleted = currentMatches;
-                session.TotalMatchesNeeded = totalMatchesNeeded;
-                
-                // Calculate accuracy
-                if (attempts > 0)
-                {
-                    session.Accuracy = ((attempts - failedAttempts) / (float)attempts) * 100f;
-                }
-            }
-            HandDataRecorder.Instance.StopRecordingAndSend();
-        }
-        
-        // NEW: Save score to database
-        yield return StartCoroutine(SaveScoreToDatabase());
+        SaveScoreToDatabase();
         
         // Hide pause button when game ends
         if (pauseButton != null)
@@ -774,23 +724,6 @@ public class GameManager : MonoBehaviour
     gameTimer = totalGameTime; // This will be the selected difficulty time
     isTimerRunning = true;
     UpdateTimerUI();
-    
-    // NEW: Start analytics tracking when the actual gameplay begins
-    GameObject analyticsManager = GameObject.Find("MahjongAnalyticsManager");
-    if (analyticsManager != null)
-    {
-        analyticsManager.SendMessage("StartGameTracking", selectedDifficulty, SendMessageOptions.DontRequireReceiver);
-    }
-    
-    // NEW: Start hand data recording when gameplay begins
-    if (HandDataRecorder.Instance != null)
-    {
-        HandDataRecorder.Instance.StartRecording("Mahjong");
-    }
-    else
-    {
-        Debug.LogWarning("⚠️ HandDataRecorder not found in scene");
-    }
 
     // Show pause button now that gameplay is starting
     if (pauseButton != null)
@@ -1121,43 +1054,7 @@ public class GameManager : MonoBehaviour
         // Stop the timer
         isTimerRunning = false;
         
-        // NEW: End analytics tracking for LOSE
-        GameObject analyticsObj = GameObject.Find("MahjongAnalyticsManager");
-        if (analyticsObj != null)
-        {
-            analyticsObj.SendMessage("EndGameTracking", false, SendMessageOptions.DontRequireReceiver);
-        }
-        
-        // NEW: Stop hand data recording and send to Firebase (LOSE)
-        if (HandDataRecorder.Instance != null && HandDataRecorder.Instance.IsRecording())
-        {
-            var session = HandDataRecorder.Instance.GetCurrentSession();
-            if (session != null)
-            {
-                // Basic game info
-                session.GameDifficulty = selectedDifficulty;
-                session.GameCompleted = false;
-                session.FinalScore = currentMatches; // Matches achieved before time ran out
-                
-                // Additional game statistics
-                session.TotalAttempts = attempts;
-                session.FailedAttempts = failedAttempts;
-                session.TimeTaken = totalGameTime; // Used all available time
-                session.TimeLimit = totalGameTime;
-                session.MatchesCompleted = currentMatches;
-                session.TotalMatchesNeeded = totalMatchesNeeded;
-                
-                // Calculate accuracy
-                if (attempts > 0)
-                {
-                    session.Accuracy = ((attempts - failedAttempts) / (float)attempts) * 100f;
-                }
-            }
-            HandDataRecorder.Instance.StopRecordingAndSend();
-        }
-        
-        // NEW: Save score to database (even on game over)
-        yield return StartCoroutine(SaveScoreToDatabase());
+        SaveScoreToDatabase();
         
         // Hide pause button when game ends
         if (pauseButton != null)
@@ -1433,74 +1330,24 @@ public class GameManager : MonoBehaviour
     }
 
     // NEW: Method to save score to database
-    private IEnumerator SaveScoreToDatabase()
+    private void SaveScoreToDatabase()
     {
-        if (FirebaseManager.Instance != null && !string.IsNullOrEmpty(selectedDifficulty))
+        if (BackendFacade.Instance == null)
         {
-            // Calculate the actual time taken (total time - remaining time)
-            float timeTakenInSeconds = totalGameTime - gameTimer;
-            
-            // Determine if this was a win or loss
-            bool isWin = (currentMatches >= totalMatchesNeeded);
-            
-            Debug.Log($"Saving {selectedDifficulty} game result:");
-            Debug.Log($"  - Last Score (Attempts): {attempts}");
-            Debug.Log($"  - Failed Attempts (Wrong Selections Only): {failedAttempts}");
-            Debug.Log($"  - Time Taken: {timeTakenInSeconds:F1} seconds");
-            Debug.Log($"  - Result: {(isWin ? "WIN" : "LOSE")}");
-            Debug.Log($"  - Matches: {currentMatches}/{totalMatchesNeeded}");
-            
-            // Start the async operation with new parameters - pass failedAttempts instead of attempts for wrong selections
-            var saveTask = FirebaseManager.Instance.UpdateGameScore(selectedDifficulty, attempts, failedAttempts, timeTakenInSeconds, isWin);
-            
-            // Wait for completion
-            yield return new WaitUntil(() => saveTask.IsCompleted);
-            
-            if (saveTask.Exception != null)
-            {
-                Debug.LogError($"Failed to save game statistics: {saveTask.Exception}");
-            }
-            else
-            {
-                Debug.Log($"✅ Game statistics saved successfully!");
-            }
+            Debug.LogWarning("Cannot save game statistics - BackendFacade not found");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("⚠️ Cannot save game statistics - FirebaseManager not found or difficulty not selected");
-        }
-    }
 
-    // NEW: Method to retrieve and display game statistics (useful for UI)
-    public async void LoadAndDisplayGameStatistics()
-    {
-        if (FirebaseManager.Instance != null)
-        {
-            var stats = await FirebaseManager.Instance.GetGameStatistics();
-            if (stats != null)
-            {
-                Debug.Log($"📊 Current Game Statistics for {stats.GameType}:");
-                Debug.Log($"   Last Scores - Easy: {stats.EasyScore}, Medium: {stats.MediumScore}, Hard: {stats.HardScore}");
-                Debug.Log($"   Time Taken: {stats.TimeTaken} seconds");
-                Debug.Log($"   Failed Attempts: {stats.FailedAttempts}");
-                Debug.Log($"   Wins: {stats.Wins}, Losses: {stats.Loses}");
-                Debug.Log($"   Total Games: {stats.TotalGames}, Win Rate: {stats.WinRate:F1}%");
-                
-                // You can use these stats to update UI elements here
-                // Example: UpdateStatsUI(stats);
-            }
-        }
-    }
+        float timeTakenInSeconds = totalGameTime - gameTimer;
+        bool isWin = currentMatches >= totalMatchesNeeded;
 
-    // NEW: Optional method to update UI with statistics (implement as needed)
-    private void UpdateStatsUI(GameStatistics stats)
-    {
-        // TODO: Implement UI updates based on your game's UI elements
-        // Example:
-        // if (easyScoreText != null) easyScoreText.text = stats.EasyScore.ToString();
-        // if (mediumScoreText != null) mediumScoreText.text = stats.MediumScore.ToString();
-        // if (hardScoreText != null) hardScoreText.text = stats.HardScore.ToString();
-        // if (winsText != null) winsText.text = stats.Wins.ToString();
-        // if (lossesText != null) lossesText.text = stats.Loses.ToString();
+        Debug.Log($"Saving Mahjong session:");
+        Debug.Log($"  - Attempts: {attempts}");
+        Debug.Log($"  - Failed Attempts: {failedAttempts}");
+        Debug.Log($"  - Time Taken: {timeTakenInSeconds:F1} seconds");
+        Debug.Log($"  - Result: {(isWin ? "WIN" : "LOSE")}");
+        Debug.Log($"  - Matches: {currentMatches}/{totalMatchesNeeded}");
+
+        BackendFacade.Instance.UploadMahjongSession(attempts, failedAttempts, timeTakenInSeconds);
     }
 }
