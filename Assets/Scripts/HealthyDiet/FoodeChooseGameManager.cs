@@ -91,10 +91,6 @@ public class FoodeChooseGameManager : MonoBehaviour
 
     public void StartGameWithDifficulty(int minutes, string difficulty)
     {
-        if (FirebaseManager.Instance != null) FirebaseManager.Instance.SelectFoodChooseGame();
-
-        if (HandDataRecorder.Instance != null) HandDataRecorder.Instance.StartRecording("FoodChoose");
-
         currentDifficulty = difficulty;
         gameDuration = minutes * 60f;
         timeRemaining = gameDuration;
@@ -287,25 +283,7 @@ public class FoodeChooseGameManager : MonoBehaviour
 
     private void HandleExternalAPIs(bool completed, string lossReason)
     {
-        if (HandDataRecorder.Instance != null && HandDataRecorder.Instance.IsRecording())
-        {
-            var session = HandDataRecorder.Instance.GetCurrentSession();
-            if (session != null)
-            {
-                session.GameDifficulty = currentDifficulty;
-                session.GameCompleted = completed;
-                session.FinalScore = currentScore;
-                session.TimeTaken = gameDuration - timeRemaining;
-                session.TotalItemsPlaced = totalItemsPlaced;
-                session.LossReason = lossReason;
-            }
-            HandDataRecorder.Instance.StopRecordingAndSend();
-        }
-
-        if (FirebaseManager.Instance != null)
-        {
-            _ = FirebaseManager.Instance.UpdateGM3Score(currentDifficulty, currentScore, lossReason, completed, chosenFoodNames);
-        }
+        // GM3 / food-choose cloud sync removed in Phase 2
     }
 
     // Video/UI Callbacks
