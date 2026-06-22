@@ -1,15 +1,11 @@
 using System;
-using UnityEngine;
 
 /// <summary>
-/// Loads the WatchSdk API base URL from Resources JSON.
+/// Loads the WatchSdk API base URL from Resources JSON (Unity) or a config file (CLI).
 /// Copy WatchSdkConfig.example.json to WatchSdkConfig.local.json (gitignored) for local dev.
 /// </summary>
-public static class WatchSdkConfig
+public static partial class WatchSdkConfig
 {
-    private const string LocalResourceName = "WatchSdkConfig.local";
-    private const string ExampleResourceName = "WatchSdkConfig.example";
-
     private static string _cachedBaseUrl;
     private static bool _loaded;
 
@@ -42,42 +38,30 @@ public static class WatchSdkConfig
         _cachedBaseUrl = LoadBaseUrl();
     }
 
-    private static string LoadBaseUrl()
+    private static partial string LoadBaseUrl();
+
+    private static string ParseConfigFile(string json, string sourceDescription)
     {
-        var local = LoadFromResource(LocalResourceName);
-        if (!string.IsNullOrEmpty(local))
-        {
-            return NormalizeBaseUrl(local);
-        }
-
-        var example = LoadFromResource(ExampleResourceName);
-        if (!string.IsNullOrEmpty(example))
-        {
-            return NormalizeBaseUrl(example);
-        }
-
-        return null;
-    }
-
-    private static string LoadFromResource(string resourceName)
-    {
-        var asset = Resources.Load<TextAsset>(resourceName);
-        if (asset == null || string.IsNullOrWhiteSpace(asset.text))
+        if (string.IsNullOrWhiteSpace(json))
         {
             return null;
         }
 
         try
         {
-            var data = JsonUtility.FromJson<WatchSdkConfigFile>(asset.text);
+            var data = DeserializeConfig(json);
             return data?.apiBaseUrl;
         }
         catch (Exception ex)
         {
-            Debug.LogWarning($"Failed to parse {resourceName}: {ex.Message}");
+            LogConfigParseWarning(sourceDescription, ex.Message);
             return null;
         }
     }
+
+    private static partial WatchSdkConfigFile DeserializeConfig(string json);
+
+    private static partial void LogConfigParseWarning(string sourceDescription, string message);
 
     public static string NormalizeBaseUrl(string value)
     {
@@ -105,7 +89,7 @@ public static class WatchSdkConfig
     }
 
     [Serializable]
-    private class WatchSdkConfigFile
+    internal class WatchSdkConfigFile
     {
         public string apiBaseUrl;
     }

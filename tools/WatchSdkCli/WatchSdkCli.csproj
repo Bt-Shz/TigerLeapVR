@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>WatchSdkCli</RootNamespace>
+    <AssemblyName>watchsdk-cli</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../Assets/Scripts/Networking/WatchSdkApiClient.cs" Link="Networking/WatchSdkApiClient.cs" />
+    <Compile Include="../../Assets/Scripts/Networking/AuthService.cs" Link="Networking/AuthService.cs" />
+    <Compile Include="../../Assets/Scripts/Networking/PerformanceService.cs" Link="Networking/PerformanceService.cs" />
+    <Compile Include="../../Assets/Scripts/Networking/WatchSdkDtos.cs" Link="Networking/WatchSdkDtos.cs" />
+    <Compile Include="../../Assets/Scripts/Networking/WatchSdkConfig.cs" Link="Networking/WatchSdkConfig.cs" />
+    <Compile Include="../../Assets/Scripts/Networking/WatchSdkSessionStore.cs" Link="Networking/WatchSdkSessionStore.cs" />
+  </ItemGroup>
+
+</Project>

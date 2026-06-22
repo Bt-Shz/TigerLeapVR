@@ -53,7 +53,13 @@ public sealed class AuthService : IDisposable
         }
         catch (Exception ex)
         {
-            UnityEngine.Debug.LogWarning($"Logout request failed (local session will still be cleared): {ex.Message}");
+#if UNITY
+            UnityEngine.Debug.LogWarning(
+                $"Logout request failed (local session will still be cleared): {ex.Message}");
+#else
+            Console.Error.WriteLine(
+                $"Logout request failed (local session will still be cleared): {ex.Message}");
+#endif
         }
         finally
         {

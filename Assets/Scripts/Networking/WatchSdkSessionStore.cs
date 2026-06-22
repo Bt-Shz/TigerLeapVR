@@ -1,14 +1,12 @@
 using System;
 using System.Globalization;
-using UnityEngine;
 
 /// <summary>
-/// Persists auth session in PlayerPrefs (mirrors Flutter AppSessionService fields).
+/// Persists auth session (PlayerPrefs in Unity, JSON file in CLI).
+/// Mirrors Flutter AppSessionService fields.
 /// </summary>
-public static class WatchSdkSessionStore
+public static partial class WatchSdkSessionStore
 {
-    private const string Prefix = "watchsdk.session.";
-
     public static bool HasSession => !string.IsNullOrEmpty(GetRefreshToken());
 
     public static bool IsRefreshTokenExpired()
@@ -34,22 +32,7 @@ public static class WatchSdkSessionStore
 
     public static StoredSessionDto Load()
     {
-        var userId = PlayerPrefs.GetString(Prefix + "userId", string.Empty);
-        if (string.IsNullOrEmpty(userId))
-        {
-            return null;
-        }
-
-        return new StoredSessionDto
-        {
-            userId = userId,
-            email = PlayerPrefs.GetString(Prefix + "email", string.Empty),
-            displayName = PlayerPrefs.GetString(Prefix + "displayName", string.Empty),
-            accessToken = PlayerPrefs.GetString(Prefix + "accessToken", string.Empty),
-            accessTokenExpiresOn = PlayerPrefs.GetString(Prefix + "accessTokenExpiresOn", string.Empty),
-            refreshToken = PlayerPrefs.GetString(Prefix + "refreshToken", string.Empty),
-            refreshTokenExpiresOn = PlayerPrefs.GetString(Prefix + "refreshTokenExpiresOn", string.Empty),
-        };
+        return ReadStoredSession();
     }
 
     public static void Save(AuthResponseDto response)
@@ -59,48 +42,41 @@ public static class WatchSdkSessionStore
             throw new WatchSdkApiException("Invalid auth response: missing user.");
         }
 
-        PlayerPrefs.SetString(Prefix + "userId", response.user.userId ?? string.Empty);
-        PlayerPrefs.SetString(Prefix + "email", response.user.email ?? string.Empty);
-        PlayerPrefs.SetString(Prefix + "displayName", response.user.displayName ?? string.Empty);
-        PlayerPrefs.SetString(Prefix + "accessToken", response.accessToken ?? string.Empty);
-        PlayerPrefs.SetString(Prefix + "accessTokenExpiresOn", response.accessTokenExpiresOn ?? string.Empty);
-        PlayerPrefs.SetString(Prefix + "refreshToken", response.refreshToken ?? string.Empty);
-        PlayerPrefs.SetString(Prefix + "refreshTokenExpiresOn", response.refreshTokenExpiresOn ?? string.Empty);
-        PlayerPrefs.Save();
+        WriteStoredSession(new StoredSessionDto
+        {
+            userId = response.user.userId ?? string.Empty,
+            email = response.user.email ?? string.Empty,
+            displayName = response.user.displayName ?? string.Empty,
+            accessToken = response.accessToken ?? string.Empty,
+            accessTokenExpiresOn = response.accessTokenExpiresOn ?? string.Empty,
+            refreshToken = response.refreshToken ?? string.Empty,
+            refreshTokenExpiresOn = response.refreshTokenExpiresOn ?? string.Empty,
+        });
     }
 
-    public static void Clear()
-    {
-        PlayerPrefs.DeleteKey(Prefix + "userId");
-        PlayerPrefs.DeleteKey(Prefix + "email");
-        PlayerPrefs.DeleteKey(Prefix + "displayName");
-        PlayerPrefs.DeleteKey(Prefix + "accessToken");
-        PlayerPrefs.DeleteKey(Prefix + "accessTokenExpiresOn");
-        PlayerPrefs.DeleteKey(Prefix + "refreshToken");
-        PlayerPrefs.DeleteKey(Prefix + "refreshTokenExpiresOn");
-        PlayerPrefs.Save();
-    }
+    public static void Clear() => DeleteStoredSession();
 
-    public static string GetAccessToken() =>
-        PlayerPrefs.GetString(Prefix + "accessToken", string.Empty);
+    public static string GetAccessToken() => ReadField(session => session?.accessToken);
 
-    public static string GetRefreshToken() =>
-        PlayerPrefs.GetString(Prefix + "refreshToken", string.Empty);
+    public static string GetRefreshToken() => ReadField(session => session?.refreshToken);
 
-    public static string GetUserEmail() =>
-        PlayerPrefs.GetString(Prefix + "email", string.Empty);
+    public static string GetUserEmail() => ReadField(session => session?.email);
 
-    public static string GetUserId() =>
-        PlayerPrefs.GetString(Prefix + "userId", string.Empty);
+    public static string GetUserId() => ReadField(session => session?.userId);
 
-    public static string GetDisplayName() =>
-        PlayerPrefs.GetString(Prefix + "displayName", string.Empty);
+    public static string GetDisplayName() => ReadField(session => session?.displayName);
 
     public static DateTime? GetAccessTokenExpiresOn() =>
-        ParseDateTime(PlayerPrefs.GetString(Prefix + "accessTokenExpiresOn", string.Empty));
+        ParseDateTime(ReadField(session => session?.accessTokenExpiresOn));
 
     public static DateTime? GetRefreshTokenExpiresOn() =>
-        ParseDateTime(PlayerPrefs.GetString(Prefix + "refreshTokenExpiresOn", string.Empty));
+        ParseDateTime(ReadField(session => session?.refreshTokenExpiresOn));
+
+    private static string ReadField(Func<StoredSessionDto, string> selector)
+    {
+        var session = ReadStoredSession();
+        return selector(session) ?? string.Empty;
+    }
 
     private static DateTime? ParseDateTime(string value)
     {
@@ -120,4 +96,10 @@ public static class WatchSdkSessionStore
 
         return null;
     }
+
+    private static partial StoredSessionDto ReadStoredSession();
+
+    private static partial void WriteStoredSession(StoredSessionDto session);
+
+    private static partial void DeleteStoredSession();
 }
