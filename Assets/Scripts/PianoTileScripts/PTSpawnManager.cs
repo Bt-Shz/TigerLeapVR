@@ -18,6 +18,14 @@ public class PTSpawnManager : MonoBehaviour
     [Header("Gesture Prefabs")]
     public List<GesturePrefab> leftHandPrefabs;
     public List<GesturePrefab> rightHandPrefabs;
+
+    [Header("Gesture Icons")]
+    public Sprite leftFistIcon;
+    public Sprite leftOpenIcon;
+    public Sprite leftPointIcon;
+    public Sprite rightFistIcon;
+    public Sprite rightOpenIcon;
+    public Sprite rightPointIcon;
     
     [Header("Spawn Settings")]
     [Tooltip("Time interval between spawns (in seconds)")]
@@ -86,11 +94,8 @@ public class PTSpawnManager : MonoBehaviour
             return;
         }
 
-        if (cubePrefab == null)
+        if (!HasValidSpawnConfiguration())
         {
-            Debug.LogError(
-                "EasyHand cannot start because PTSpawnManager has no cube prefab. " +
-                "The required EasyHand prefabs are missing or unassigned; assign valid prefabs before recording sessions.");
             return;
         }
 
@@ -138,7 +143,7 @@ public class PTSpawnManager : MonoBehaviour
     /// </summary>
     private void SpawnRandomCube()
     {
-        if (spawnPositions.Length == 0)
+        if (spawnPositions == null || spawnPositions.Length == 0)
         {
             if (showDebug)
                 Debug.LogWarning("PTSpawnManager: Cannot spawn cube - missing spawn positions");
@@ -149,7 +154,9 @@ public class PTSpawnManager : MonoBehaviour
         int randomIndex = Random.Range(0, spawnPositions.Length);
         bool isLeft = (randomIndex == 0);
         Vector3 spawnPosition = spawnPositions[randomIndex];
-        Vector3 spawnRotation = randomIndex < spawnRotations.Length ? spawnRotations[randomIndex] : Vector3.zero;
+        Vector3 spawnRotation = spawnRotations != null && randomIndex < spawnRotations.Length
+            ? spawnRotations[randomIndex]
+            : Vector3.zero;
         
         // Pick Random Gesture
         HandGestureType[] gestures = { HandGestureType.Fist, HandGestureType.Open, HandGestureType.Point };
@@ -159,12 +166,15 @@ public class PTSpawnManager : MonoBehaviour
         GameObject prefabToSpawn = cubePrefab; // Fallback
         List<GesturePrefab> targetList = isLeft ? leftHandPrefabs : rightHandPrefabs;
         
-        foreach(var gp in targetList)
+        if (targetList != null)
         {
-            if(gp.gestureType == randomGesture && gp.prefab != null)
+            foreach (var gp in targetList)
             {
-                prefabToSpawn = gp.prefab;
-                break;
+                if (gp.gestureType == randomGesture && gp.prefab != null)
+                {
+                    prefabToSpawn = gp.prefab;
+                    break;
+                }
             }
         }
 
@@ -172,20 +182,91 @@ public class PTSpawnManager : MonoBehaviour
 
         // Instantiate the cube
         GameObject spawnedCube = Instantiate(prefabToSpawn, spawnPosition, Quaternion.Euler(spawnRotation));
+        spawnedCube.name = $"EasyHand_{(isLeft ? "Left" : "Right")}_{randomGesture}";
         
         // Setup Gesture Note (New System)
         GestureNoteMover noteMover = spawnedCube.GetComponent<GestureNoteMover>();
-        if (noteMover != null)
+        if (noteMover == null)
         {
-            noteMover.gestureType = randomGesture;
-            noteMover.isLeftHand = isLeft;
-            noteMover.speed = Mathf.Abs(noteSpeed); // Ensure positive speed for Translate(back)
-            noteMover.speedIncreaseRate = Mathf.Abs(speedIncreaseRate);
+            Debug.LogError($"EasyHand prefab '{prefabToSpawn.name}' has no GestureNoteMover.");
+            Destroy(spawnedCube);
+            return;
         }
+
+        SpriteRenderer iconRenderer = noteMover.iconRenderer != null
+            ? noteMover.iconRenderer
+            : spawnedCube.GetComponentInChildren<SpriteRenderer>();
+        Sprite gestureIcon = GetGestureIcon(randomGesture, isLeft);
+        if (iconRenderer == null || gestureIcon == null)
+        {
+            Debug.LogError(
+                $"EasyHand cannot render {randomGesture} for the {(isLeft ? "left" : "right")} hand.");
+            Destroy(spawnedCube);
+            return;
+        }
+
+        iconRenderer.sprite = gestureIcon;
+        noteMover.iconRenderer = iconRenderer;
+        noteMover.gestureType = randomGesture;
+        noteMover.isLeftHand = isLeft;
+        noteMover.speed = Mathf.Abs(noteSpeed); // Ensure positive speed for Translate(back)
+        noteMover.speedIncreaseRate = Mathf.Abs(speedIncreaseRate);
         
         if (showDebug)
         {
             Debug.Log($"PTSpawnManager: Spawned gesture {randomGesture} at position {spawnPosition} (Left: {isLeft})");
+        }
+    }
+
+    private bool HasValidSpawnConfiguration()
+    {
+        if (spawnPositions == null || spawnPositions.Length == 0)
+        {
+            Debug.LogError("EasyHand cannot start because no note spawn positions are configured.");
+            return false;
+        }
+
+        if (cubePrefab == null)
+        {
+            Debug.LogError("EasyHand cannot start because its note prefab is unassigned.");
+            return false;
+        }
+
+        if (cubePrefab.GetComponent<GestureNoteMover>() == null)
+        {
+            Debug.LogError("EasyHand cannot start because its note prefab has no GestureNoteMover.");
+            return false;
+        }
+
+        if (leftFistIcon == null || leftOpenIcon == null || leftPointIcon == null ||
+            rightFistIcon == null || rightOpenIcon == null || rightPointIcon == null)
+        {
+            Debug.LogError("EasyHand cannot start because one or more gesture icons are unassigned.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private Sprite GetGestureIcon(HandGestureType gesture, bool isLeft)
+    {
+        if (isLeft)
+        {
+            switch (gesture)
+            {
+                case HandGestureType.Fist: return leftFistIcon;
+                case HandGestureType.Open: return leftOpenIcon;
+                case HandGestureType.Point: return leftPointIcon;
+                default: return null;
+            }
+        }
+
+        switch (gesture)
+        {
+            case HandGestureType.Fist: return rightFistIcon;
+            case HandGestureType.Open: return rightOpenIcon;
+            case HandGestureType.Point: return rightPointIcon;
+            default: return null;
         }
     }
     
@@ -195,6 +276,11 @@ public class PTSpawnManager : MonoBehaviour
     [ContextMenu("Spawn Single Cube")]
     public void SpawnSingleCube()
     {
+        if (!HasValidSpawnConfiguration())
+        {
+            return;
+        }
+
         SpawnRandomCube();
     }
     

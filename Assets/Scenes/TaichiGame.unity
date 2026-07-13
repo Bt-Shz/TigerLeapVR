@@ -3092,21 +3092,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4001155f071e543aad71e557ef9ded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 4376006218807795983, guid: cbc72f23eeb57144c8a237842189629c, type: 3}
+  cubePrefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
   leftHandPrefabs:
   - gestureType: 1
-    prefab: {fileID: 1429877921428142497, guid: a0c196d6235e3ca40986795a3af0fdae, type: 3}
+    prefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
   - gestureType: 2
-    prefab: {fileID: 1429877921428142497, guid: 65cbedf817a40cb42b20c3bd482e8160, type: 3}
+    prefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
   - gestureType: 3
-    prefab: {fileID: 1429877921428142497, guid: 337abf66669e34b4e99ba9bb0f3342bf, type: 3}
+    prefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
   rightHandPrefabs:
   - gestureType: 1
-    prefab: {fileID: 1429877921428142497, guid: ef8e4a0a1a5d8f044bc29992728294a3, type: 3}
+    prefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
   - gestureType: 2
-    prefab: {fileID: 1429877921428142497, guid: b3c710dcd86861d498ad0e9cfd1594c3, type: 3}
+    prefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
   - gestureType: 3
-    prefab: {fileID: 1429877921428142497, guid: 8c3654e5c7870644da7d4f3f73e82c49, type: 3}
+    prefab: {fileID: 1429877921428142497, guid: e2a3b4c5d6e74f8091a2b3c4d5e6f708, type: 3}
+  leftFistIcon: {fileID: 21300000, guid: 54baf0d4cbfa7764da2a1f6e339cfc8f, type: 3}
+  leftOpenIcon: {fileID: 21300000, guid: 8a5c1673633176740bb7e69281cf5edd, type: 3}
+  leftPointIcon: {fileID: 21300000, guid: 0e576c93c3192cc4d929225ce3b326ce, type: 3}
+  rightFistIcon: {fileID: 21300000, guid: 84b2d24e9966c6449822104b472d6bc9, type: 3}
+  rightOpenIcon: {fileID: 21300000, guid: 782c03e613725394ea8b210b73ac4949, type: 3}
+  rightPointIcon: {fileID: 21300000, guid: 733e596e76ae1a74e803c49917b67b2a, type: 3}
   spawnInterval: 5
   autoStart: 0
   spawnPositions:
