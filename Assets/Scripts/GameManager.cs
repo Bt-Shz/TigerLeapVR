@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour
     private int currentMatches = 0;
     private int attempts = 0;  // Track number of attempts
     private int failedAttempts = 0;  // Track number of wrong selections only
+    private bool sessionFinished = false;
+    private bool resultUploadStarted = false;
+
+    public bool CanRecordAttempt => gameStarted && !sessionFinished;
 
     [Header("Collection Grid")]
     private bool[,] collectionGridFilled = new bool[4, 3]; // Track filled positions
@@ -165,9 +169,10 @@ public class GameManager : MonoBehaviour
             if (gameTimer <= 0f)
             {
                 gameTimer = 0f;
-                isTimerRunning = false;
-                // Trigger Game Over
-                StartCoroutine(ShowGameOver());
+                if (TryFinishSession())
+                {
+                    StartCoroutine(ShowGameOver());
+                }
             }
             
             // Update the timer display
@@ -197,6 +202,8 @@ public class GameManager : MonoBehaviour
         // Reset attempts
         attempts = 0;
         failedAttempts = 0;  // Reset failed attempts as well
+        sessionFinished = false;
+        resultUploadStarted = false;
         UpdateAttemptsUI();
         
         // Set total matches needed
@@ -290,6 +297,7 @@ public class GameManager : MonoBehaviour
     // Call this when a card is flipped (attempts incremented)
     public void IncrementAttempts()
     {
+        if (!CanRecordAttempt) return;
         attempts++;
         UpdateAttemptsUI();
     }
@@ -297,6 +305,7 @@ public class GameManager : MonoBehaviour
     // Call this when a wrong match occurs (failed attempts incremented)
     public void IncrementFailedAttempts()
     {
+        if (!CanRecordAttempt) return;
         failedAttempts++;
     }
     
@@ -390,6 +399,7 @@ public class GameManager : MonoBehaviour
     
     public void CardMatched(int cardTypeId, CardController matchedCard)
     {
+        if (!CanRecordAttempt) return;
         currentMatches++;
         
         // Play correct match sound
@@ -443,8 +453,21 @@ public class GameManager : MonoBehaviour
         // Check if all cards are matched
         if (currentMatches >= totalMatchesNeeded)
         {
-            StartCoroutine(ShowWinCelebration());
+            if (TryFinishSession())
+            {
+                StartCoroutine(ShowWinCelebration());
+            }
         }
+    }
+
+    private bool TryFinishSession()
+    {
+        if (sessionFinished) return false;
+
+        sessionFinished = true;
+        gameStarted = false;
+        isTimerRunning = false;
+        return true;
     }
 
     // Apply completion effect to all 4 cards of the same type
@@ -1332,6 +1355,9 @@ public class GameManager : MonoBehaviour
     // NEW: Method to save score to database
     private void SaveScoreToDatabase()
     {
+        if (resultUploadStarted) return;
+        resultUploadStarted = true;
+
         if (BackendFacade.Instance == null)
         {
             Debug.LogWarning("Cannot save game statistics - BackendFacade not found");
@@ -1340,14 +1366,19 @@ public class GameManager : MonoBehaviour
 
         float timeTakenInSeconds = totalGameTime - gameTimer;
         bool isWin = currentMatches >= totalMatchesNeeded;
+        int resolvedAttempts = currentMatches + failedAttempts;
 
         Debug.Log($"Saving Mahjong session:");
-        Debug.Log($"  - Attempts: {attempts}");
+        Debug.Log($"  - Card flips: {attempts}");
+        Debug.Log($"  - Resolved attempts: {resolvedAttempts}");
         Debug.Log($"  - Failed Attempts: {failedAttempts}");
         Debug.Log($"  - Time Taken: {timeTakenInSeconds:F1} seconds");
         Debug.Log($"  - Result: {(isWin ? "WIN" : "LOSE")}");
         Debug.Log($"  - Matches: {currentMatches}/{totalMatchesNeeded}");
 
-        BackendFacade.Instance.UploadMahjongSession(attempts, failedAttempts, timeTakenInSeconds);
+        BackendFacade.Instance.UploadMahjongSession(
+            resolvedAttempts,
+            failedAttempts,
+            timeTakenInSeconds);
     }
 }

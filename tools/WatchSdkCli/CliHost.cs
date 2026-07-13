@@ -79,7 +79,7 @@ public sealed class CliHost : IDisposable
 
     public async Task UploadEasyHandAsync(int caught, int misses, float seconds)
     {
-        var total = caught + misses;
+        var total = (long)caught + misses;
         var accuracy = total > 0
             ? Math.Round(caught / (double)total * 100d, 1)
             : 0d;

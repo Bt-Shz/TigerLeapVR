@@ -40,8 +40,10 @@ public sealed class WatchSdkApiClient : IDisposable
             displayName = displayName,
         };
 
-        var response = await SendJsonAsync(HttpMethod.Post, "/api/v1/auth/register", body);
-        return ParseAuthResponse(response);
+        using (var response = await SendJsonAsync(HttpMethod.Post, "/api/v1/auth/register", body))
+        {
+            return ParseAuthResponse(response);
+        }
     }
 
     public async Task<AuthResponseDto> LoginAsync(string email, string password)
@@ -52,15 +54,19 @@ public sealed class WatchSdkApiClient : IDisposable
             password = password,
         };
 
-        var response = await SendJsonAsync(HttpMethod.Post, "/api/v1/auth/login", body);
-        return ParseAuthResponse(response);
+        using (var response = await SendJsonAsync(HttpMethod.Post, "/api/v1/auth/login", body))
+        {
+            return ParseAuthResponse(response);
+        }
     }
 
     public async Task<AuthResponseDto> RefreshAsync(string refreshToken)
     {
         var body = new RefreshRequestDto { refreshToken = refreshToken };
-        var response = await SendJsonAsync(HttpMethod.Post, "/api/v1/auth/refresh", body);
-        return ParseAuthResponse(response);
+        using (var response = await SendJsonAsync(HttpMethod.Post, "/api/v1/auth/refresh", body))
+        {
+            return ParseAuthResponse(response);
+        }
     }
 
     public async Task LogoutAsync()
@@ -108,29 +114,31 @@ public sealed class WatchSdkApiClient : IDisposable
                 "No backend access token is available. Sign in again.");
         }
 
-        var response = await SendJsonAsync(
-            method,
-            path,
-            body,
-            bearerToken: accessToken,
-            throwOnError: false);
-
-        if (response.StatusCode != System.Net.HttpStatusCode.Unauthorized || !allowRefresh)
+        using (var response = await SendJsonAsync(
+                   method,
+                   path,
+                   body,
+                   bearerToken: accessToken,
+                   throwOnError: false))
         {
-            EnsureSuccess(response);
-            return await response.Content.ReadAsStringAsync();
+            if (response.StatusCode != System.Net.HttpStatusCode.Unauthorized || !allowRefresh)
+            {
+                EnsureSuccess(response);
+                return await response.Content.ReadAsStringAsync();
+            }
         }
 
         await RefreshWithMutexAsync();
 
         var retryToken = WatchSdkSessionStore.GetAccessToken();
-        var retryResponse = await SendJsonAsync(
-            method,
-            path,
-            body,
-            bearerToken: retryToken);
-
-        return await retryResponse.Content.ReadAsStringAsync();
+        using (var retryResponse = await SendJsonAsync(
+                   method,
+                   path,
+                   body,
+                   bearerToken: retryToken))
+        {
+            return await retryResponse.Content.ReadAsStringAsync();
+        }
     }
 
     private async Task RefreshWithMutexAsync()
@@ -150,7 +158,7 @@ public sealed class WatchSdkApiClient : IDisposable
             {
                 session = await RefreshAsync(refreshToken);
             }
-            catch (WatchSdkApiException)
+            catch (WatchSdkApiException ex) when (ex.StatusCode is 400 or 401)
             {
                 WatchSdkSessionStore.Clear();
                 throw;
@@ -204,7 +212,15 @@ public sealed class WatchSdkApiClient : IDisposable
 
         if (throwOnError)
         {
-            EnsureSuccess(response);
+            try
+            {
+                EnsureSuccess(response);
+            }
+            catch
+            {
+                response.Dispose();
+                throw;
+            }
         }
 
         return response;

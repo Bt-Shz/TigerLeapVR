@@ -130,6 +130,13 @@ public class PTMenuManager : MonoBehaviour
             Debug.Log("PTMenuManager: Quit button clicked - Loading MainMenu");
         }
         
+        if (PTGameManager.Instance != null)
+        {
+            PTGameManager.Instance.QuitToMenu();
+            return;
+        }
+
+        Debug.LogWarning("PTMenuManager: PTGameManager not found; leaving without a performance upload.");
         LoadMainMenu();
     }
 

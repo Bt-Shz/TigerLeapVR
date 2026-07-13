@@ -81,14 +81,24 @@ public class PTSpawnManager : MonoBehaviour
     /// </summary>
     public void StartSpawning()
     {
-        if (!isSpawning && cubePrefab != null)
+        if (isSpawning)
         {
-            isSpawning = true;
-            spawnCoroutine = StartCoroutine(SpawnCubes());
-            
-            if (showDebug)
-                Debug.Log("PTSpawnManager: Started spawning cubes");
+            return;
         }
+
+        if (cubePrefab == null)
+        {
+            Debug.LogError(
+                "EasyHand cannot start because PTSpawnManager has no cube prefab. " +
+                "The required EasyHand prefabs are missing or unassigned; assign valid prefabs before recording sessions.");
+            return;
+        }
+
+        isSpawning = true;
+        spawnCoroutine = StartCoroutine(SpawnCubes());
+
+        if (showDebug)
+            Debug.Log("PTSpawnManager: Started spawning cubes");
     }
     
     /// <summary>

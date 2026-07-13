@@ -175,19 +175,25 @@ public class PTGameManager : MonoBehaviour
 
     private void UploadResult(bool quitting)
     {
-        if (uploadedThisRun) return;
-        uploadedThisRun = true;
-
-        int cubesCaught = scoreManager != null ? scoreManager.GetTotalCubesCaught() : 0;
-        float sessionSeconds = Time.time - sessionStartTime;
-
-        if (BackendFacade.Instance != null)
+        if (!uploadedThisRun)
         {
-            BackendFacade.Instance.UploadEasyHandSession(cubesCaught, currentMisses, sessionSeconds);
-        }
-        else
-        {
-            Debug.LogWarning("Cannot upload EasyHand session - BackendFacade not found");
+            uploadedThisRun = true;
+
+            int cubesCaught = scoreManager != null ? scoreManager.GetTotalCubesCaught() : 0;
+            float sessionSeconds = Time.time - sessionStartTime;
+
+            if ((long)cubesCaught + currentMisses == 0)
+            {
+                Debug.Log("Skipping EasyHand upload because the session has no completed attempts.");
+            }
+            else if (BackendFacade.Instance != null)
+            {
+                BackendFacade.Instance.UploadEasyHandSession(cubesCaught, currentMisses, sessionSeconds);
+            }
+            else
+            {
+                Debug.LogWarning("Cannot upload EasyHand session - BackendFacade not found");
+            }
         }
 
         if (quitting)

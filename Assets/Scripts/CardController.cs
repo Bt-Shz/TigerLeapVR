@@ -200,15 +200,15 @@ public class CardController : MonoBehaviour
 
     public void OnClick()
     {
-        // Don't allow interaction until game has started
-        if (GameManager.Instance != null && !GameManager.Instance.gameStarted) return;
+        GameManager gameManager = GameManager.Instance;
+        if (gameManager == null || !gameManager.CanRecordAttempt) return;
 
         if (isBusy || isMatched) return;
 
         // Increment attempts when a card is clicked
-        if (GameManager.Instance != null && !isFlipped)
+        if (!isFlipped)
         {
-            GameManager.Instance.IncrementAttempts();
+            gameManager.IncrementAttempts();
         }
 
         // Start flip
@@ -216,16 +216,16 @@ public class CardController : MonoBehaviour
     }
     void OnMouseDown()
     {
-        // Don't allow interaction until game has started
-        if (GameManager.Instance != null && !GameManager.Instance.gameStarted) return;
+        GameManager gameManager = GameManager.Instance;
+        if (gameManager == null || !gameManager.CanRecordAttempt) return;
         
         if (isBusy) return;
         if (isMatched) return;
         
         // Increment attempts when a card is clicked
-        if (GameManager.Instance != null && !isFlipped)
+        if (!isFlipped)
         {
-            GameManager.Instance.IncrementAttempts();
+            gameManager.IncrementAttempts();
         }
         
         StartCoroutine(FlipRoutine());
@@ -251,6 +251,12 @@ public class CardController : MonoBehaviour
             
             isFlipped = true;
 
+            GameManager gameManager = GameManager.Instance;
+            if (gameManager == null || !gameManager.CanRecordAttempt)
+            {
+                yield break;
+            }
+
             // Check if this card matches with any player hand card
             bool hasMatch = CheckForPlayerHandMatch();
 
@@ -260,15 +266,12 @@ public class CardController : MonoBehaviour
                 isMatched = true;
 
                 // Notify GameManager that a match has been found
-                GameManager.Instance.CardMatched(cardTypeId, this);
+                gameManager.CardMatched(cardTypeId, this);
             }
             else
             {
                 // Play wrong match sound
-                if (GameManager.Instance != null)
-                {
-                    GameManager.Instance.PlayWrongMatchSound();
-                }
+                gameManager.PlayWrongMatchSound();
                 
                 // No match, wait and flip back
                 yield return new WaitForSeconds(2f);
